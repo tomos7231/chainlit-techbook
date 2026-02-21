@@ -23,5 +23,5 @@ jobs:
     - name: Upload distribution file to github artifacts
       uses: actions/upload-artifact@v4.6.1
       with:
-        name: output-pdf
+        name: output-pdf.zip
         path: ./articles/*.pdf
