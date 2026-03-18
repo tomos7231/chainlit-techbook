@@ -1,7 +1,13 @@
 
 = Chainlitで作るAI英会話ツール
+//lead{
+本章では、ChainlitとOpenAI APIを使った英会話ツールの実装を紹介します。マイクから英語を話すと音声認識でテキスト化され、AIが英語で返答し、その応答を音声で読み上げてくれます。
+音声認識を用いたチャットツールの実装に興味がある方や、OpenAI APIが提供する音声関連のモデルを活用してみたい方におすすめの内容です。
+//}
 
-本章では、ChainlitとOpenAI APIを使って「音声対応のAI英会話ツール」を実装する方法を解説します。マイクから英語を話すと音声認識でテキスト化され、AIが英語で返答し、その応答を音声で読み上げてくれます。
+//pagebreak
+
+本章では、音声対応のAI英会話ツールを作成します。ユーザーがマイクに向かって英語を話すと、AIによる返答がテキストと音声の両方で返却される仕組みです。
 音声の入出力を伴うツールは実装が難しいと思われがちですが、Chainlitを使うと非常にシンプルなコードで実現できます。早速、ツールの全体像から見ていきましょう。
 
 == ツールの全体像
@@ -28,9 +34,8 @@
 === ファイル構成
 
 プロジェクトの主要なファイル構成は以下のとおりです。
-
 //emlist{
-code/
+ch07-eng-conversation/
 ├── app.py              # アプリケーション本体
 ├── pyproject.toml      # 依存パッケージ定義
 ├── .env                # OpenAI APIキー
@@ -42,32 +47,32 @@ code/
 
 == 環境構築
 
-=== 依存パッケージ
-
-@<code>{pyproject.toml}で定義している依存パッケージは3つだけです。
-
-//emlist[pyproject.toml]{
-[project]
-name = "chainlit-sandbox"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = [
-    "chainlit>=2.6.3",
-    "openai>=2.24.0",
-    "python-dotenv>=1.2.2",
-]
+=== プロジェクトのセットアップ
+サポートページをcloneし、本章のプロジェクトディレクトリに移動してください。
+//emlist{
+$ git clone https://github.com/statditto/chainlit-techbook-support.git
+$ cd ch07-eng-conversation
 //}
 
-@<code>{.env}ファイルにOpenAIのAPIキーを設定してください。
+uvを使って依存パッケージをインストールします。ChainlitとOpenAIのPythonクライアントがインストールされます。
+//cmd{
+$ uv sync
+//}
+
+本プロジェクトではOpenAIのAPIキーを使用するため、OpenAIのサイト@<fn>{openai-site}からAPIキーを発行し、@<code>{.env}ファイルに設定してください。
+
+//footnote[openai-site][OpenAI APIキー発行ページ: @<href>{https://platform.openai.com/account/api-keys}]
 
 //emlist[.env]{
 OPENAI_API_KEY=sk-proj-your-api-key-here
 //}
 
-アプリケーションの起動は以下のコマンドで行います。
+=== アプリケーションの起動
+
+実際にアプリケーションを起動するには、以下のコマンドを実行します。
 
 //cmd{
-$ chainlit run app.py -w
+$ uv run chainlit run app.py
 //}
 
 == Chainlitでの音声入力
